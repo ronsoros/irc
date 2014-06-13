@@ -1,3 +1,15 @@
+2014-04-19  Kurt Roeckx
+
+	* class.c/add_class(): Don't allow setting negative amount of max
+	  clients.
+	* s_numeric.c/do_numeric(): Initialize p to NULL for call to strtoken()
+	* whowas.c/m_whowas(): Initialize p to NULL for call to strtoken()
+	* s_bsd.c/close_client_fd(): Initialize the complete linger structure
+	* mod_webproxy.c/proxy_init(): On unknown options free the buffer.
+	* mod_socks.c/socks_init(): On unknown options free the buffer.
+	* s_id.c/ltoid(): Fix checking of max length of UID.
+	* iauth.c/write_pidfile(): Don't create a '0' filled buffer
+
 2011-01-20  Piotr Kucharski
 
 	* s_bsd.c/read_listener(), s_serv.c/report_listeners(): use IsSplit()
