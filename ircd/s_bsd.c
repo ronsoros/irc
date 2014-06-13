@@ -1378,6 +1378,7 @@ void close_client_fd(aClient *cptr)
 	struct 	linger	sockling;
 
 	sockling.l_onoff = 0;
+	sockling.l_linger = 0;
 #endif
 
 	if (cptr->authfd >= 0)
