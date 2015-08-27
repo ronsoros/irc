@@ -501,9 +501,9 @@
 */
 #define INET6
 #ifdef INET6
-# define IRCDCONF_DELIMITER "%%"
+# define IRCDCONF_DELIMITER '%'
 #else
-# define IRCDCONF_DELIMITER "%%"
+# define IRCDCONF_DELIMITER '%'
 #endif
 
 /*
