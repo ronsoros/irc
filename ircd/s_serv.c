@@ -837,7 +837,8 @@ int	m_server(aClient *cptr, aClient *sptr, int parc, char *parv[])
 		MyFree(cptr->info);
 	}
 	cptr->info = mystrdup(info[0] ? info : ME);
-
+	/* Check if open linking is enabled - Ronsor 27-Aug-15 */
+	#ifndef OPENLINK
 	switch (check_server_init(cptr))
 	{
 	case 0 :
@@ -853,6 +854,11 @@ int	m_server(aClient *cptr, aClient *sptr, int parc, char *parv[])
 			    get_client_host(cptr));
 		return exit_client(cptr, cptr, &me, "No C/N conf lines");
 	}
+	#else
+		/* the server passed cuz >openlink - Ronsor */
+		return m_server_estab(cptr, (parc > 3) ? parv[3] : NULL,
+                        versionbuf);
+	#endif
 }
 
 int	m_server_estab(aClient *cptr, char *sid, char *versionbuf)
