@@ -370,12 +370,12 @@ int	check_version(aClient *cptr)
 
 	/* Check version number/mask from conf */
 	sprintf(buf, "%s/%s", id, cptr->info);
-	if (find_two_masks(cptr->name, buf, CONF_VER))
+	/*if (find_two_masks(cptr->name, buf, CONF_VER))
 	{
 		sendto_flag(SCH_ERROR, "Bad version %s %s from %s", id,
 			    cptr->info, get_client_name(cptr, TRUE));
 		return exit_client(cptr, cptr, &me, "Bad version");
-	}
+	}*/
 
 	if (misc)
 	{
