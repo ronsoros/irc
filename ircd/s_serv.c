@@ -22,7 +22,7 @@
  */
 
 #ifndef lint
-static const volatile char rcsid[] = "@(#)$Id: s_serv.c,v 1.299 2011/01/20 14:26:56 bif Exp $";
+static const volatile char rcsid[] = "@(#)$Id: s_serv.c,v 1.298 2010/08/12 16:24:31 bif Exp $";
 #endif
 
 #include "os.h"
@@ -307,7 +307,7 @@ static int	get_version(char *version, char *id)
 		{
 			/* earlier than 2.11.0b12 kills users with nicks longer
 			** than 9 and does not pass +R modes --B. */
-			result = SV_OLD;
+			result = SV_2_11;
 		}
 	}
 	else if (!strncmp(version, "021", 3))
@@ -320,7 +320,7 @@ static int	get_version(char *version, char *id)
 	{
 		/* if it doesn't match above, it is too old
 		   to coexist with us, sorry! */
-		result = SV_OLD;
+		result = SV_2_11;
 	}
 
 	return result;
@@ -370,12 +370,12 @@ int	check_version(aClient *cptr)
 
 	/* Check version number/mask from conf */
 	sprintf(buf, "%s/%s", id, cptr->info);
-	/*if (find_two_masks(cptr->name, buf, CONF_VER))
+	if (find_two_masks(cptr->name, buf, CONF_VER))
 	{
 		sendto_flag(SCH_ERROR, "Bad version %s %s from %s", id,
 			    cptr->info, get_client_name(cptr, TRUE));
 		return exit_client(cptr, cptr, &me, "Bad version");
-	}*/
+	}
 
 	if (misc)
 	{
@@ -837,8 +837,7 @@ int	m_server(aClient *cptr, aClient *sptr, int parc, char *parv[])
 		MyFree(cptr->info);
 	}
 	cptr->info = mystrdup(info[0] ? info : ME);
-	/* Check if open linking is enabled - Ronsor 27-Aug-15 */
-	#ifndef OPENLINK
+
 	switch (check_server_init(cptr))
 	{
 	case 0 :
@@ -854,11 +853,6 @@ int	m_server(aClient *cptr, aClient *sptr, int parc, char *parv[])
 			    get_client_host(cptr));
 		return exit_client(cptr, cptr, &me, "No C/N conf lines");
 	}
-	#else
-		/* the server passed cuz >openlink - Ronsor */
-		return m_server_estab(cptr, (parc > 3) ? parv[3] : NULL,
-                        versionbuf);
-	#endif
 }
 
 int	m_server_estab(aClient *cptr, char *sid, char *versionbuf)
@@ -918,7 +912,7 @@ int	m_server_estab(aClient *cptr, char *sid, char *versionbuf)
 		}
 		return exit_client(cptr, cptr, &me, "No C line for server");
 	    }
-
+        */
 	if (cptr->hopcount == SV_OLD) /* lame test, should be == 0 */
 	    {
 		sendto_one(cptr, "ERROR :Server version is too old.");
@@ -3823,7 +3817,7 @@ static void report_listeners(aClient *sptr, char *to)
 		{
 			if (iconf.caccept == 0)
 				what = "noaccept";
-			else if (iconf.caccept == 2 && IsSplit())
+			else if (iconf.caccept == 2 && iconf.split == 1)
 				what = "splitnoaccept";
 			else
 				what = "active";
